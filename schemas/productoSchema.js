@@ -17,13 +17,18 @@ const productoSchema = new mongoose.Schema({
         default: "c/u"
     },
 
+    cantidad: Number,
+
     imagen: String,
     
     linked: String
 });
 
 const ventaSchema = new mongoose.Schema({
-    lista: [productoSchema],
+    lista: [
+        productoSchema,
+       
+    ],
     total: Number,
     fecha: {
         type: Date,
