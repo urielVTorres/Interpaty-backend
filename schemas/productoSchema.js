@@ -21,7 +21,12 @@ const productoSchema = new mongoose.Schema({
 
     imagen: String,
     
-    linked: String
+    linked: String,
+
+    categoria: {
+        type: String,
+        required: true
+    }
 });
 
 const ventaSchema = new mongoose.Schema({

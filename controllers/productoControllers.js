@@ -1,10 +1,10 @@
 import {Producto, Venta} from "../schemas/productoSchema.js";
 
 const agregarProducto = async (req, res)=>{
-    const {concepto, precio } = req.body;
+    const {concepto, precio, categoria } = req.body;
     console.log(req.body);
-    if([concepto, precio].includes('')){
-        return res.json({msg: "El nombre y el precio son obligatorios" , error: true});
+    if([concepto, precio, categoria].includes('')){
+        return res.json({msg: "El nombre, el precio y la categoría son obligatorios" , error: true});
     }
     try {
         //Agregar el producto a la base de datos con la información del formulario
@@ -50,9 +50,29 @@ const obtenerReporte = async (req, res)=>{
     }
 }
 
+const eliminarProducto = async (req, res) =>{
+    const producto = await Producto.findById(req.body.id);
+    console.log(producto);
+    if(!producto) {
+        return res.status(404).json({msg: "Producto no encontrado"});
+    }
+    if(producto.id.toString() !== req._id.toString){
+    return res.json({msg: "Acción no valida"});
+    }
+
+    try {
+        await producto.deleteOne();
+        return res.json({msg: "Producto eliminado"});
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
+
 export {
     agregarProducto,
     leerProductos,
     finalizarCompra,
-    obtenerReporte
+    obtenerReporte,
+    eliminarProducto
 }
