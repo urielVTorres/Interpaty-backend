@@ -15,6 +15,15 @@ app.use(Express.json());
 //Conectar con la base de datos
 conectarDB();
 
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", '*');
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+});
+
 //Otorgar permisos de CROD a la dirección del frontend
 const dominiosPermitidos = [process.env.FRONTEND_URL, process.env.FRONTEND_URL_MOBILE];
 
@@ -28,6 +37,8 @@ const corsOptions = {
     }
 }
 app.use(cors(corsOptions));
+
+
 //Conectar con las rutas
 app.use('/', router);
 //Conectar con el puerto
