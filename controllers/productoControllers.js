@@ -1,6 +1,7 @@
 import {Producto, Venta} from "../schemas/productoSchema.js";
 
 const agregarProducto = async (req, res)=>{
+    res.header("Access-Control-Allow-Origin", "*");
     const {concepto, precio, categoria } = req.body;
     console.log(req.body);
     if([concepto, precio, categoria].includes('')){
@@ -19,6 +20,7 @@ const agregarProducto = async (req, res)=>{
 }
 
 const leerProductos = async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     try {
         const productos = await Producto.find({});
         return res.json(productos);
@@ -29,6 +31,7 @@ const leerProductos = async (req, res) => {
 }
 
 const finalizarCompra = async (req, res)=>{
+    res.header("Access-Control-Allow-Origin", "*");
     try {
         const carrito = new Venta(req.body);
         carrito.save();
@@ -41,6 +44,7 @@ const finalizarCompra = async (req, res)=>{
 }
 
 const obtenerReporte = async (req, res)=>{
+    res.header("Access-Control-Allow-Origin", "*");
     try {
         const reporte = await Venta.find({});
         return res.json(reporte);
@@ -51,6 +55,7 @@ const obtenerReporte = async (req, res)=>{
 }
 
 const eliminarProducto = async (req, res) =>{
+    res.header("Access-Control-Allow-Origin", "*");
     const producto = await Producto.findById(req.body.id);
     console.log(producto);
     if(!producto) {
