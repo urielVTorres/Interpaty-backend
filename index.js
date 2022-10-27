@@ -15,15 +15,25 @@ app.use(Express.json());
 //Conectar con la base de datos
 conectarDB();
 
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", '*');
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
+// Add headers before the routes are defined
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
     next();
 });
-
 //Otorgar permisos de CROD a la dirección del frontend
 const dominiosPermitidos = [process.env.FRONTEND_URL, process.env.FRONTEND_URL_MOBILE];
 
