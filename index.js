@@ -10,6 +10,8 @@ dotenv.config();
 const app = Express();
 const PORT = process.env.PORT || 4000;
 
+
+app.use(Express.json());
 //Conectar con la base de datos
 conectarDB();
 
@@ -27,7 +29,6 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 //Conectar con las rutas
-app.use(bodyParser.json());
 app.use('/', router);
 //Conectar con el puerto
 app.listen(PORT, ()=>{

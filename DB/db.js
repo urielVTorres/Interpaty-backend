@@ -1,13 +1,16 @@
 import mongoose from "mongoose";
 
-const db = mongoose;
 
-const conectarDB = () => {
+const conectarDB = async () => {
     try {
-        db.connect(process.env.DB_URL);
+        const db = mongoose.connect(process.env.DB_URL, {
+            useNewUrlParser:true,
+            useUnifiedTopology:true
+        });
         console.log("base de datos conectada");
     } catch (error) {
         console.log(error);
+        process.exit(1);
     }
 }
 
