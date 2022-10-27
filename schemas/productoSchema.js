@@ -24,8 +24,7 @@ const productoSchema = new mongoose.Schema({
     linked: String,
 
     categoria: {
-        type: String,
-        required: true
+        type: String
     }
 });
 
