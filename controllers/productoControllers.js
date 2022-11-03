@@ -2,14 +2,13 @@ import {Producto, Venta} from "../schemas/productoSchema.js";
 
 const agregarProducto = async (req, res)=>{
     res.header("Access-Control-Allow-Origin", "*");
-    const {concepto, precio, categoria } = req.body;
-    console.log(req.body);
+    const {concepto, precio, categoria } = req.body.data;
     if([concepto, precio, categoria].includes('')){
         return res.json({msg: "El nombre, el precio y la categoría son obligatorios" , error: true});
     }
     try {
         //Agregar el producto a la base de datos con la información del formulario
-        const nuevoProducto = new Producto(req.body);
+        const nuevoProducto = new Producto(req.body.data);
         nuevoProducto.save();
 
         //Enviar respuesta positiva
