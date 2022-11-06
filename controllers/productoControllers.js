@@ -29,6 +29,17 @@ const leerProductos = async (req, res) => {
     }
 }
 
+const leerProducto = async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    try {
+        const productos = await Producto.findById(req.params.id);
+        return res.json(productos);
+    } catch (error){
+        res.status(404).json({msg:"No fue posible conectar con el servidor", error:true});
+
+    }
+}
+
 const finalizarCompra = async (req, res)=>{
     res.header("Access-Control-Allow-Origin", "*");
     try {
@@ -51,16 +62,41 @@ const obtenerReporte = async (req, res)=>{
         console.log(error);
         return res.status(404).json({msg: "Hubo un error :O ", error:true});
     }
+    
 }
+
+const editarProducto = async (req, res) => {
+    console.log("modificando1");
+    res.header("Access-Control-Allow-Origin", "*");
+    const producto = await Producto.findById(req.params.id);
+    if(!producto)
+        return res.status(400).json({msg: "Producto no encontrado"});
+    //actualizar producto
+    producto.concepto = req.body.data.concepto || producto.concepto;
+    producto.precio = req.body.data.precio || producto.precio;
+    producto.categoria = req.body.data.categoria || producto.categoria;
+    producto.linked = req.body.data.linked || producto.linked;
+    console.log("modificando3");
+    console.log(producto)
+    try {
+        const productoActualizado = await producto.save();
+        console.log("modificando4");
+        return res.json({msg: "¡Producto Actualizado!"});
+    } catch (error){
+        console.log(error);
+    }
+    return res.json(producto);
+}
+
 
 const eliminarProducto = async (req, res) =>{
     res.header("Access-Control-Allow-Origin", "*");
-    const producto = await Producto.findById(req.body.id);
-    console.log(producto);
+    const producto = await Producto.findById(req.params.id);
+    
     if(!producto) {
         return res.status(404).json({msg: "Producto no encontrado"});
     }
-    if(producto.id.toString() !== req._id.toString){
+    if(producto._id.toString() !== req.params.id){
     return res.json({msg: "Acción no valida"});
     }
 
@@ -78,5 +114,7 @@ export {
     leerProductos,
     finalizarCompra,
     obtenerReporte,
-    eliminarProducto
+    eliminarProducto,
+    editarProducto,
+    leerProducto
 }
