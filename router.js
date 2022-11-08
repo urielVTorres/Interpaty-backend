@@ -1,7 +1,22 @@
 import { Router } from "express";
-import { agregarProducto, leerProductos, leerProducto, finalizarCompra, obtenerReporte, eliminarProducto, editarProducto } from "./controllers/productoControllers.js";
+import { 
+    agregarProducto, 
+    registrarUsuario,
+    iniciarSesion, 
+    leerProductos, 
+    leerProducto, 
+    finalizarCompra, 
+    obtenerReporte, 
+    eliminarProducto, 
+    editarProducto
+} from "./controllers/productoControllers.js";
 const router = Router();
 
+//----------Rutas Publicas----------------
+router.post('/signup', registrarUsuario);
+router.get('/login', iniciarSesion);
+
+//----------Rutas Privadas----------------
 router.get('/', (req, res)=>{
     res.send('Welcome');
 })

@@ -1,4 +1,54 @@
-import {Producto, Venta} from "../schemas/productoSchema.js";
+import {Producto, Venta, Usuario} from "../schemas/productoSchema.js";
+
+const registrarUsuario = async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    const {nombres, apellidos, email, contraseña} = req.body.data;
+    if([nombres, apellidos, email, contraseña].includes('')){
+        return res.json({msg: "Todos los campos son obligatorios", error:true});
+    }
+    const existeUsuario = await Usuario.findOne({email:email});
+
+    if(existeUsuario)
+        return res.status(400).json({msg:"Este correo ya está vinculado a una cuenta", error: true});
+
+    try {
+        const usuario = new Usuario(req.body.data);
+        usuario.save();
+        return res.json({msg: "¡Usuario Registrado!"});
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({msg: "¡Ocurrió un error :O!", error:true});
+    }
+}
+
+const iniciarSesion = async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    const {email, password} = req.body.data;
+    if([email, password].includes('')){
+        return res.json({msg:"Todos los campos son obligatorios", error: true});
+    }
+
+    try {
+        const usuario = await Usuario.findOne({email: email});
+        
+        if(!usuario)
+            return res.json({msg:"Este correo no se encuentra registrado.", error:true});
+        
+        if(password !== usuario.password)
+            return res.json({msg:"Contraseña incorrecta", error: true});
+        
+        return res.json({
+            _id: usuario._id,
+            nombres: usuario.nombres,
+            apellidos: usuario.apellidos
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({msg:"Ocurrió un error de conexión D:", error: true})
+    }
+    
+}
 
 const agregarProducto = async (req, res)=>{
     res.header("Access-Control-Allow-Origin", "*");
@@ -110,6 +160,8 @@ const eliminarProducto = async (req, res) =>{
 }
 
 export {
+    registrarUsuario,
+    iniciarSesion,
     agregarProducto,
     leerProductos,
     finalizarCompra,
