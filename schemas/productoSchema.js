@@ -40,10 +40,7 @@ const ventaSchema = new mongoose.Schema({
             return Date.now() - 5*60*60*1000;
         }
     },
-    vendedor: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Usuario'
-    }
+    vendedor: String
 });
 
 const usuarioSchema = new mongoose.Schema({

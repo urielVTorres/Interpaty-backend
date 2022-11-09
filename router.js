@@ -14,7 +14,7 @@ const router = Router();
 
 //----------Rutas Publicas----------------
 router.post('/signup', registrarUsuario);
-router.get('/login', iniciarSesion);
+router.post('/login', iniciarSesion);
 
 //----------Rutas Privadas----------------
 router.get('/', (req, res)=>{
@@ -24,7 +24,7 @@ router.post('/agregar', agregarProducto);
 router.get('/productos', leerProductos);
 router.get('/producto/:id', leerProducto);
 router.post('/compra', finalizarCompra);
-router.get('/reporte', obtenerReporte);
+router.post('/reporte', obtenerReporte);
 router.route('/producto/:id').delete(eliminarProducto).put(editarProducto);
 
 

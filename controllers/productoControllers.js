@@ -1,5 +1,6 @@
 import {Producto, Venta, Usuario} from "../schemas/productoSchema.js";
 
+
 const registrarUsuario = async (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     const {nombres, apellidos, email, contraseña} = req.body.data;
@@ -24,6 +25,7 @@ const registrarUsuario = async (req, res) => {
 
 const iniciarSesion = async (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
+    console.log(req.body);
     const {email, password} = req.body.data;
     if([email, password].includes('')){
         return res.json({msg:"Todos los campos son obligatorios", error: true});
@@ -31,7 +33,7 @@ const iniciarSesion = async (req, res) => {
 
     try {
         const usuario = await Usuario.findOne({email: email});
-        
+        console.log(usuario);
         if(!usuario)
             return res.json({msg:"Este correo no se encuentra registrado.", error:true});
         
@@ -105,8 +107,10 @@ const finalizarCompra = async (req, res)=>{
 
 const obtenerReporte = async (req, res)=>{
     res.header("Access-Control-Allow-Origin", "*");
+    console.log(req.body.data);
+    const {id} = req.body.data;
     try {
-        const reporte = await Venta.find({});
+        const reporte = await Venta.find().where('vendedor').equals(id);
         return res.json(reporte);
     } catch(error) {
         console.log(error);
